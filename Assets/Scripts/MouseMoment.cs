@@ -9,6 +9,7 @@ public class MouseMoment : MonoBehaviour
     float yRotation;
     [SerializeField]
     Transform RootPlayer;
+    public Recoil rec;
     void Start()
     {
         
@@ -23,7 +24,7 @@ public class MouseMoment : MonoBehaviour
         yRotation += mouseX; 
         xRotation = Mathf.Clamp(xRotation, -90f, 60f);
         RootPlayer.Rotate(Vector3.up * mouseX);
-        transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+        transform.localRotation = Quaternion.Euler(new Vector3(xRotation,yRotation,0)+ rec.I_tareget);
 
     }
     void Update()

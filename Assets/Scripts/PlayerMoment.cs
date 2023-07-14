@@ -18,10 +18,14 @@ public class PlayerMoment : MonoBehaviour
     public LayerMask Ground;
     bool isGrounded;
     Vector3 direction;
+    public float playerheight = 0;
+    Vector3 centre;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        playerheight = controller.height;
+        centre = controller.center;
     }
 
     void Movement()
@@ -57,10 +61,21 @@ public class PlayerMoment : MonoBehaviour
         }
     }
     
-  
+  void Crouch()
+    {
+        if ( Input.GetKey(KeyCode.LeftControl))
+        {
+            controller.height = playerheight / 2;
+        }
+        else
+        {
+            controller.height = Mathf.Lerp(controller.height, playerheight, Time.deltaTime * 30f);
+        }
+    }
     // Update is called once per frame
     void Update()
     {
+        Crouch();
         Movement();
         CheckGround();
         Jump();
