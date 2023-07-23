@@ -16,3 +16,4 @@ MonoBehaviour:
   firerate: 5
   magzine: 35
   TimeToReload: 2
+  Damage: 27

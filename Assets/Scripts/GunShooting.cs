@@ -27,6 +27,11 @@ public class GunShooting : MonoBehaviour
     float magzine;
     [SerializeField]
     TextMeshProUGUI ammo;
+
+    public void DoneGameManager()
+    {
+        Done();
+    }
     void Done()
     {
         if (Input.GetKeyUp(KeyCode.R) || currentammo <= 0)
@@ -64,7 +69,7 @@ public class GunShooting : MonoBehaviour
 
             //anime.Play("idle");
         }
-
+        ammo.text = currentammo + "/" + magzine;
     }
 
 
@@ -88,9 +93,5 @@ public class GunShooting : MonoBehaviour
         magzine = m_WeaponManager.magzine;
     }
     // Update is called once per frame
-    void Update()
-    {
-        ammo.text = currentammo + "/" + magzine;
-        Done();
-    }
+  
 }

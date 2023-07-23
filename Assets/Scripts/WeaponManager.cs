@@ -9,4 +9,5 @@ public class WeaponManager:ScriptableObject
     public int firerate;
     public int magzine;
     public float TimeToReload;
+    public int Damage;
 }
