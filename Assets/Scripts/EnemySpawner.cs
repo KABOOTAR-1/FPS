@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
    public List<Enemy> m_Spawns = new List<Enemy>();
-    int i = 8;
+    int i = 2;
     int x;
     void Start()
     {

@@ -12,16 +12,22 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     PlayerHealth playerHealth;
    public GunShooting gunShooting;
+    private void Awake()
+    {
+        Time.timeScale = 0.2f;
+    }
     void Start()
     {
         Mainmenu.SetActive(false);
         gunShooting = MainCamera.GetComponentInChildren<GunShooting>();
+        
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (Mainmenu.activeSelf==true)
@@ -45,7 +51,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             gunShooting.DoneGameManager();
         }
-        Debug.Log(playerHealth.I_Health);
+        //Debug.Log(playerHealth.I_Health);
         
     }
 }

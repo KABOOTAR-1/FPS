@@ -19,7 +19,6 @@ public class GunShooting : MonoBehaviour
     RaycastHit hit;
     public Animator anime;
     public Recoil recoil_script;
-    public RaycastHit iRay { get; private set; }
     public bool canFire = true;
     [SerializeField]
     float currentammo;
@@ -51,9 +50,9 @@ public class GunShooting : MonoBehaviour
                 if (hit.transform.GetComponent<Enemy>() != null)
                 {
                     hit.transform.GetComponent<Enemy>().ChangeHealth();
+                    hit.transform.LookAt(transform.parent.transform.position);
                     flash = Instantiate(Richrocket, hit.point, Quaternion.LookRotation(hit.normal));
-                    //flash.GetComponent<ParticleSystem>().Play();
-                    Destroy(flash, 4);
+                    Destroy(flash, 1);
                 }
 
             }
@@ -92,6 +91,6 @@ public class GunShooting : MonoBehaviour
         currentammo = 7;
         magzine = m_WeaponManager.magzine;
     }
-    // Update is called once per frame
+
   
 }
