@@ -29,6 +29,7 @@ public class GunShooting : MonoBehaviour
 
     public void DoneGameManager()
     {
+        if(currentammo>0 || magzine>0)
         Done();
     }
     void Done()
