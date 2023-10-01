@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 63a46f3af5835ce4ea5ce335888026e4
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - POLYA Regular
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 4546ff523ecc01b48a97a8cffed25c99, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

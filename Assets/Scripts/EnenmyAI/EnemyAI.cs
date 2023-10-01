@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
     NavMeshAgent agent;
-    Transform player;
+    public Transform player;
     float dis;
 
     bool playerwithsightrange;
@@ -39,7 +39,7 @@ public class EnemyAI : MonoBehaviour
         playerwithsightrange = false;
         walkPointSet = false;
         walkpointRange = 10f;
-        playermask = player.gameObject.layer;
+        playermask = LayerMask.GetMask("Player");
         agent.stoppingDistance = dis;
         timebtnattacks = 0.75f;
 
