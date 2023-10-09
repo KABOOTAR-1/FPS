@@ -8,7 +8,7 @@ public class ClientAPI : MonoBehaviour
     string url = "http://localhost:4000/player/";
     private void Start()
     {
-        StartCoroutine(Get(url));
+       
     }
     [System.Serializable]
     class PlayerData
@@ -25,11 +25,11 @@ public class ClientAPI : MonoBehaviour
         public string token;
 
     }
-    public IEnumerator Post(string url)
+    public static IEnumerator Post(string url,string username,string password)
     {
         PlayerData playerData = new PlayerData();
-        playerData.user_name = "Arvind";
-        playerData.password = "This is it";
+        playerData.user_name = username;
+        playerData.password = password;
         var jsonData = JsonUtility.ToJson(playerData);
  
 
@@ -80,7 +80,7 @@ public class ClientAPI : MonoBehaviour
         }
     }
 
-    public IEnumerator Get(string url)
+    public static IEnumerator Get(string url)
     {
         using (UnityWebRequest request = UnityWebRequest.Get(url)) {
 
