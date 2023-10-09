@@ -1,17 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
     GameObject Mainmenu;
-    bool pan=false;
+    bool pan = false;
     [SerializeField]
     GameObject MainCamera;
     [SerializeField]
     PlayerHealth playerHealth;
-   public GunShooting gunShooting;
+    public GunShooting gunShooting;
+    [SerializeField]
+    TextMeshProUGUI User_Name;
+
+    [SerializeField]
+    TextMeshProUGUI Score;
+
+
     private void Awake()
     {
         Time.timeScale = 0.2f;
@@ -20,17 +27,17 @@ public class GameManager : MonoBehaviour
     {
         Mainmenu.SetActive(false);
         gunShooting = MainCamera.GetComponentInChildren<GunShooting>();
-        
+        User_Name.text = InputAndButtons.I_Username;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (Mainmenu.activeSelf==true)
+            if (Mainmenu.activeSelf == true)
             {
                 Mainmenu.SetActive(false);
             }
@@ -52,6 +59,6 @@ public class GameManager : MonoBehaviour
             gunShooting.DoneGameManager();
         }
         //Debug.Log(playerHealth.I_Health);
-        
+
     }
 }
