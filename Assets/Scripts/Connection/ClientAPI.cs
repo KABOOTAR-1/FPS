@@ -1,14 +1,10 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using System;
+
 public class ClientAPI : MonoBehaviour
 {
-    private void Start()
-    {
-
-    }
     [System.Serializable]
     class PlayerData
     {
@@ -22,125 +18,81 @@ public class ClientAPI : MonoBehaviour
         public string user_name;
         public int score;
         public string token;
-
     }
-    public static IEnumerator LoginUser(string url, string username, string password)
+
+    public static IEnumerator UserAction(string url, string username, string password, bool isLogin)
     {
         PlayerData playerData = new PlayerData();
         playerData.user_name = username;
         playerData.password = password;
         var jsonData = JsonUtility.ToJson(playerData);
 
-
-        using (UnityWebRequest ClientCreate = new UnityWebRequest(url, "POST"))
+        using (UnityWebRequest clientRequest = new UnityWebRequest(url, "POST"))
         {
             byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
 
-            using (var uploadHandler = new UploadHandlerRaw(bodyRaw)) // Use 'using' to dispose of the UploadHandlerRaw
+            using (var uploadHandler = new UploadHandlerRaw(bodyRaw))
             {
-                ClientCreate.uploadHandler = uploadHandler;
-                ClientCreate.downloadHandler = new DownloadHandlerBuffer();
-                ClientCreate.SetRequestHeader("Content-Type", "application/json");
+                clientRequest.uploadHandler = uploadHandler;
+                clientRequest.downloadHandler = new DownloadHandlerBuffer();
+                clientRequest.SetRequestHeader("Content-Type", "application/json");
 
-                yield return ClientCreate.SendWebRequest();
 
-                if (ClientCreate.result == UnityWebRequest.Result.ConnectionError)
+                yield return clientRequest.SendWebRequest();
+
+                if (clientRequest.result == UnityWebRequest.Result.ConnectionError)
                 {
-                    Debug.Log(ClientCreate.error);
+                    Debug.Log(clientRequest.error);
                 }
                 else
                 {
-                    if (ClientCreate.isDone)
+                    if (clientRequest.isDone)
                     {
-                        // handle the result
-                        string result = System.Text.Encoding.UTF8.GetString(ClientCreate.downloadHandler.data);
+                        string result = System.Text.Encoding.UTF8.GetString(clientRequest.downloadHandler.data);
                         Debug.Log(result);
                         try
                         {
                             var re = JsonUtility.FromJson<tp>(result);
-                            FileHandling.SaveToken(re.token);
+                            if (!string.IsNullOrEmpty(re.token))
+                            {
+                                FileHandling.SaveToken(re.token);
+                            }
                         }
                         catch (Exception err)
                         {
                             if (result == "400")
                                 Debug.Log("Invalid Credentials");
-                            if (result == "404")
-                                Debug.Log("No such UserName exsits");
-                        };
-
-
-                    }
-                    else
-                    {
-                        Debug.Log("Error! Data couldn't get.");
-                    }
-                }
-                uploadHandler.Dispose();
-            }
-            ClientCreate.Dispose();
-        }
-    }
-
-    public static IEnumerator AddUser(string url, string username, string password)
-    {
-        PlayerData playerData = new PlayerData();
-        playerData.user_name = username;
-        playerData.password = password;
-        var jsonData = JsonUtility.ToJson(playerData);
-
-
-        using (UnityWebRequest ClientCreate = new UnityWebRequest(url, "POST"))
-        {
-            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
-
-            using (var uploadHandler = new UploadHandlerRaw(bodyRaw)) // Use 'using' to dispose of the UploadHandlerRaw
-            {
-                ClientCreate.uploadHandler = uploadHandler;
-                ClientCreate.downloadHandler = new DownloadHandlerBuffer();
-                ClientCreate.SetRequestHeader("Content-Type", "application/json");
-
-                yield return ClientCreate.SendWebRequest();
-
-                if (ClientCreate.result == UnityWebRequest.Result.ConnectionError)
-                {
-                    Debug.Log(ClientCreate.error);
-                }
-                else
-                {
-                    if (ClientCreate.isDone)
-                    {
-                        // handle the result
-                        string result = System.Text.Encoding.UTF8.GetString(ClientCreate.downloadHandler.data);
-                        Debug.Log(result);
-                        try
-                        {
-                            var re = JsonUtility.FromJson<Player>(result);
-                        }
-                        catch (Exception err)
-                        {
+                            if (result == "404" && isLogin)
+                                Debug.Log("No such UserName exists");
+                            if (result == "409" && !isLogin)
                                 Debug.Log("Such UserName already exists");
-                        };
-
-
+                        }
                     }
                     else
                     {
-                        Debug.Log("Error! Data couldn't get.");
+                        Debug.Log("Error! Data couldn't be retrieved.");
                     }
                 }
                 uploadHandler.Dispose();
+                clientRequest.uploadHandler.Dispose();
+                clientRequest.downloadHandler.Dispose();
             }
-            ClientCreate.Dispose();
+            clientRequest.Dispose();
         }
     }
 
-    public static IEnumerator Get(string url)
+    public static IEnumerator Get(string url, bool sendToken = true)
     {
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
-
-            string token = FileHandling.LoadToken();
-            request.SetRequestHeader("Authorization", "Bearer " + token);
+            if (sendToken)
+            {
+                string token = FileHandling.LoadToken();
+                if (!string.IsNullOrEmpty(token))
+                {
+                    request.SetRequestHeader("Authorization", "Bearer " + token);
+                }
+            }
 
             yield return request.SendWebRequest();
 
@@ -158,14 +110,15 @@ public class ClientAPI : MonoBehaviour
                     }
                     catch (Exception err)
                     {
-                        Debug.Log("You are not authorised " + err.Message);
+                        Debug.Log("You are not authorized " + err.Message);
                     }
                 }
                 else
                 {
-                    Debug.Log("Couldnt get the data");
+                    Debug.Log("Couldn't get the data.");
                 }
             }
+
             request.Dispose();
         }
     }

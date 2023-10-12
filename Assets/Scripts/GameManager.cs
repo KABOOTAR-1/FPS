@@ -6,7 +6,6 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     GameObject Mainmenu;
-    bool pan = false;
     [SerializeField]
     GameObject MainCamera;
     [SerializeField]
@@ -14,11 +13,13 @@ public class GameManager : MonoBehaviour
     public GunShooting gunShooting;
     [SerializeField]
     TextMeshProUGUI User_Name;
-
+    public LayerMask Enemy;
     [SerializeField]
-    TextMeshProUGUI Score;
-
-
+    GameObject bulletMark;
+    [SerializeField]
+    AudioSource m_AudioSource;
+    [SerializeField]
+    TextMeshProUGUI GunAmmo;
     private void Awake()
     {
         Time.timeScale = 0.2f;
@@ -28,13 +29,12 @@ public class GameManager : MonoBehaviour
         Mainmenu.SetActive(false);
         gunShooting = MainCamera.GetComponentInChildren<GunShooting>();
         User_Name.text = InputAndButtons.I_Username;
-
+        gunShooting.SetTextMeshPro(GunAmmo);
     }
 
     // Update is called once per frame
     void Update()
     {
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (Mainmenu.activeSelf == true)
@@ -56,9 +56,13 @@ public class GameManager : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;
-            gunShooting.DoneGameManager();
+            if (Input.GetMouseButtonDown(0) || Input.GetKeyUp(KeyCode.R))
+            {
+                Transform EnemyPlayer = gunShooting.DoneGameManager(Enemy, Camera.main, bulletMark,m_AudioSource);
+                if (EnemyPlayer != null)
+                EnemyPlayer.GetComponent<Enemy>().ChangeHealth();
+            }
         }
-        //Debug.Log(playerHealth.I_Health);
 
     }
 }

@@ -11,7 +11,7 @@ public class InputAndButtons : MonoBehaviour
     public static string I_Username { get; private set; }
     void Start()
     {
-        login[0].SetActive(true); ;
+        login[0].SetActive(true);
         Register[0].SetActive(true); ;
         login[1].SetActive(false);
         Register[1].SetActive(false);
@@ -45,7 +45,7 @@ public class InputAndButtons : MonoBehaviour
         string username = loginchild[0].transform.GetComponent<TMP_InputField>().text;
         string password = loginchild[1].transform.GetComponent<TMP_InputField>().text;
         I_Username = username;
-        StartCoroutine(ClientAPI.LoginUser(url, username, password));
+        StartCoroutine(ClientAPI.UserAction(url, username, password,true));
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
@@ -62,8 +62,8 @@ public class InputAndButtons : MonoBehaviour
         string username = registerchild[0].transform.GetComponent<TMP_InputField>().text;
         string password = registerchild[1].transform.GetComponent<TMP_InputField>().text;
         I_Username = username;
-        StartCoroutine(ClientAPI.AddUser(url, username, password));
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        StartCoroutine(ClientAPI.UserAction(url, username, password,false));
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void Update()
     {

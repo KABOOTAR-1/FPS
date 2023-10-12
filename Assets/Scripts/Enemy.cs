@@ -1,27 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
     float health;
-    public float iHealth { get; private set; }
-    void Start()
+    ScoreSystem scoresystem;
+
+    private void Start()
     {
-        
+        health = 100f;
+        scoresystem=GameObject.FindGameObjectWithTag("GameManager").GetComponent<ScoreSystem>();
     }
 
-    private void Update()
-    {
-        iHealth = health;
-        if (health<=0)
-            Destroy(gameObject);
-    }
 
     public void ChangeHealth()
     {
         health -= 5;
+        if (health <= 0)
+        {
+            scoresystem.IncreaseScore();
+            Destroy(gameObject);
+        }
     }
    
 }

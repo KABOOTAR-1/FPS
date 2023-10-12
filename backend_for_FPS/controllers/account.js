@@ -29,6 +29,7 @@ const addPlayer = try_catch(async (req, res) => {
 
   const userWithoutPassword = newPlayer.toObject();
   delete userWithoutPassword.password;
+  console.log(userWithoutPassword);
   res.send(userWithoutPassword);
 });
 
@@ -48,7 +49,6 @@ const loginPlayer = try_catch(async (req, res) => {
 });
 
 const getPlayer = try_catch(async (req, res) => {
-  console.log(req.user);
   res.send("This works");
 });
 

@@ -7,16 +7,10 @@ public class GunShooting : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField]
-    AudioSource m_AudioSource;
-    [SerializeField]
     ParticleSystem m_ParticleSystem;
     public WeaponManager m_WeaponManager;
     float recoil=0;
     public float range = 100f;
-    public GameObject Richrocket;
-    GameObject flash;
-    public Camera cam;
-    RaycastHit hit;
     public Animator anime;
     public Recoil recoil_script;
     public bool canFire = true;
@@ -24,15 +18,22 @@ public class GunShooting : MonoBehaviour
     float currentammo;
     [SerializeField]
     float magzine;
-    [SerializeField]
     TextMeshProUGUI ammo;
-
-    public void DoneGameManager()
+    RaycastHit hit;
+    Transform val;
+    public void SetTextMeshPro(TextMeshProUGUI main)
     {
-        if(currentammo>0 || magzine>0)
-        Done();
+        ammo = main;
     }
-    void Done()
+    public Transform DoneGameManager(LayerMask Enemy,Camera cam,GameObject bulletMark, AudioSource m_AudioSource)
+    {
+        val =null;
+        if(currentammo>0 || magzine>0)
+        return Done(Enemy,cam,bulletMark,m_AudioSource);
+
+        return val;
+    }
+    Transform Done(LayerMask Enemy,Camera cam, GameObject bulletMark, AudioSource m_AudioSource)
     {
         if (Input.GetKeyUp(KeyCode.R) || currentammo <= 0)
         {
@@ -42,20 +43,15 @@ public class GunShooting : MonoBehaviour
 
         if (magzine <= 0)
             if (currentammo <= 0)
-                return;
+                return null;
 
-        if (Input.GetMouseButtonDown(0) && canFire && recoil <= Time.time)
+        if (Input.GetMouseButtonDown(0) &&canFire && recoil <= Time.time)
         {
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range))
-            {
-                if (hit.transform.GetComponent<Enemy>() != null)
-                {
-                    hit.transform.GetComponent<Enemy>().ChangeHealth();
-                    hit.transform.LookAt(transform.parent.transform.position);
-                    flash = Instantiate(Richrocket, hit.point, Quaternion.LookRotation(hit.normal));
-                    Destroy(flash, 1);
-                }
-
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range,Enemy))
+            {   
+                    GameObject Mark = Instantiate(bulletMark, hit.point, Quaternion.LookRotation(hit.normal));
+                    Destroy(Mark, 1);
+                    val = hit.transform;
             }
             recoil = Time.time + 1 / m_WeaponManager.firerate;
             m_ParticleSystem.Play();
@@ -70,6 +66,8 @@ public class GunShooting : MonoBehaviour
             //anime.Play("idle");
         }
         ammo.text = currentammo + "/" + magzine;
+        return val;
+
     }
 
 
@@ -81,16 +79,18 @@ public class GunShooting : MonoBehaviour
         canFire= false;
         yield return new WaitForSeconds(m_WeaponManager.TimeToReload);
         Debug.Log(m_WeaponManager.ammo -currentammo);
-        magzine -= (7 - currentammo);
-        currentammo = 7;
+        magzine -= (m_WeaponManager.ammo - currentammo);
+        currentammo = m_WeaponManager.ammo;
         canFire = true;
-        
+        ammo.text = currentammo + "/" + magzine;
+
     }
 
     void Start()
     {
-        currentammo = 7;
+        currentammo = m_WeaponManager.ammo;
         magzine = m_WeaponManager.magzine;
+        ammo.text = currentammo + "/" + magzine;
     }
 
   
