@@ -27,7 +27,7 @@ public class EnemyAI : MonoBehaviour
     private void Awake()
     {
         
-}
+    }
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();

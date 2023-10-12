@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-using UnityEngine.SceneManagement;
 public class InputAndButtons : MonoBehaviour
 {
     public GameObject[] login;
     public GameObject[] Register;
+    public bool sucess1 = false;
+    public bool sucess2 = false;
     public static string I_Username { get; private set; }
     void Start()
     {
@@ -45,8 +46,13 @@ public class InputAndButtons : MonoBehaviour
         string username = loginchild[0].transform.GetComponent<TMP_InputField>().text;
         string password = loginchild[1].transform.GetComponent<TMP_InputField>().text;
         I_Username = username;
-        StartCoroutine(ClientAPI.UserAction(url, username, password,true));
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        StartCoroutine(ClientAPI.UserAction(url, username, password, true, (success) =>
+        {
+            if (success)
+            { 
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+        }));
     }
 
     public void RegisterInput()
@@ -62,8 +68,14 @@ public class InputAndButtons : MonoBehaviour
         string username = registerchild[0].transform.GetComponent<TMP_InputField>().text;
         string password = registerchild[1].transform.GetComponent<TMP_InputField>().text;
         I_Username = username;
-        StartCoroutine(ClientAPI.UserAction(url, username, password,false));
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        StartCoroutine(ClientAPI.UserAction(url, username, password, true, (success) =>
+        {
+            if (success)
+            { 
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+        }));
+
     }
     public void Update()
     {

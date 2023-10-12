@@ -20,7 +20,7 @@ public class ClientAPI : MonoBehaviour
         public string token;
     }
 
-    public static IEnumerator UserAction(string url, string username, string password, bool isLogin)
+    public static IEnumerator UserAction(string url, string username, string password, bool isLogin,Action<bool> onResult)
     {
         PlayerData playerData = new PlayerData();
         playerData.user_name = username;
@@ -39,7 +39,6 @@ public class ClientAPI : MonoBehaviour
 
 
                 yield return clientRequest.SendWebRequest();
-
                 if (clientRequest.result == UnityWebRequest.Result.ConnectionError)
                 {
                     Debug.Log(clientRequest.error);
@@ -50,6 +49,7 @@ public class ClientAPI : MonoBehaviour
                     {
                         string result = System.Text.Encoding.UTF8.GetString(clientRequest.downloadHandler.data);
                         Debug.Log(result);
+                        bool success = false;
                         try
                         {
                             var re = JsonUtility.FromJson<tp>(result);
@@ -57,6 +57,7 @@ public class ClientAPI : MonoBehaviour
                             {
                                 FileHandling.SaveToken(re.token);
                             }
+                            success = true;
                         }
                         catch (Exception err)
                         {
@@ -67,6 +68,7 @@ public class ClientAPI : MonoBehaviour
                             if (result == "409" && !isLogin)
                                 Debug.Log("Such UserName already exists");
                         }
+                        onResult?.Invoke(success);
                     }
                     else
                     {
