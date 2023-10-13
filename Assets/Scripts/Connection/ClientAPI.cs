@@ -124,4 +124,54 @@ public class ClientAPI : MonoBehaviour
             request.Dispose();
         }
     }
+    [System.Serializable]
+    class PlayerChange
+    {
+       public string user_name;
+       public int score;
+    }
+    public static IEnumerator Put(string url, string user_name, int score)
+    {
+        PlayerChange player = new PlayerChange
+        {
+            user_name = user_name,
+            score = score
+        };
+        string jsonData = JsonUtility.ToJson(player);
+
+        using (UnityWebRequest request = new UnityWebRequest(url, "PUT"))
+        {
+            string token = FileHandling.LoadToken();
+            if (!string.IsNullOrEmpty(token))
+            {
+                request.SetRequestHeader("Authorization", "Bearer " + token);
+            }
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+
+            using (var uploadHandler = new UploadHandlerRaw(bodyRaw))
+            {
+                request.uploadHandler = uploadHandler;
+                request.downloadHandler = new DownloadHandlerBuffer();
+                request.SetRequestHeader("Content-Type", "application/json");
+
+                yield return request.SendWebRequest();
+
+                if (request.result == UnityWebRequest.Result.ConnectionError)
+                {
+                    Debug.LogError("Connection error: " + request.error);
+                }
+                else if (request.isDone)
+                {
+                    string result = System.Text.Encoding.UTF8.GetString(request.downloadHandler.data);
+                    Debug.Log("Request successful!");
+                    Debug.Log(result);
+                }
+                else
+                {
+                    Debug.LogError("Error! Data couldn't be received.");
+                }
+            }
+        }
+    }
+
 }

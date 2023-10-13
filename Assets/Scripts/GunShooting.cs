@@ -98,17 +98,24 @@ public class GunShooting : MonoBehaviour
 
     IEnumerator Reload()
     {
-        if (currentammo == m_WeaponManager.ammo || magzine<=0)
-            yield return null;
+        if (currentammo == m_WeaponManager.ammo || magzine <= 0)
+        {
+            yield return null; // Do nothing if the ammo is full or the magazine is empty
+        }
+        else
+        {
+            canFire = false;
 
-        canFire= false;
-        yield return new WaitForSeconds(m_WeaponManager.TimeToReload);
-        Debug.Log(m_WeaponManager.ammo -currentammo);
-        magzine -= (m_WeaponManager.ammo - currentammo);
-        currentammo = m_WeaponManager.ammo;
-        canFire = true;
-        ammo.text = currentammo + "/" + magzine;
+            yield return new WaitForSeconds(m_WeaponManager.TimeToReload);
 
+            float requiredAmmo = m_WeaponManager.ammo - currentammo; // Calculate how much ammo is needed to fully reload
+            float ammoToReload = Mathf.Min(requiredAmmo, magzine); // Reload as much ammo as available in the magazine
+            currentammo += ammoToReload; // Increment current ammo with the reloaded ammo
+            magzine -= ammoToReload; // Decrement magazine ammo by the reloaded amount
+
+            canFire = true;
+            ammo.text = currentammo + "/" + magzine;
+        }
     }
 
     void Start()

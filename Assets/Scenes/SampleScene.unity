@@ -657,7 +657,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 95
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!154 &443377170
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -1901,6 +1901,7 @@ MonoBehaviour:
   bulletMark: {fileID: 3548588485384254792, guid: 2f9e7dc163581394da1e00b561eed65d, type: 3}
   m_AudioSource: {fileID: 134671845}
   GunAmmo: {fileID: 1831319940}
+  enemyAi: {fileID: 0}
 --- !u!114 &1052254390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2713,7 +2714,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -7917222663556021603, guid: 64fe9c96b816af84f8a333d36a9f2756, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7917222663556021603, guid: 64fe9c96b816af84f8a333d36a9f2756, type: 3}
       propertyPath: timebtnattacks
@@ -3800,7 +3801,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &2087849032
 AudioSource:
   m_ObjectHideFlags: 0

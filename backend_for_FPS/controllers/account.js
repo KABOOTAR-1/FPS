@@ -52,4 +52,20 @@ const getPlayer = try_catch(async (req, res) => {
   res.send("This works");
 });
 
-module.exports = { addPlayer, loginPlayer, getPlayer };
+const updateScore = try_catch(async (req, res) => {
+  const { user_name, score } = req.body;
+  const player = await Pschema.findOne({ user_name: user_name });
+  if (player == null) console.log("No such player exsists");
+  console.log("This works");
+  if (player.score < score) {
+    const find = await GameSC.findOneAndUpdate(
+      { user_name: user_name },
+      { score: score }
+    );
+    res.send(find);
+  } else {
+    res.send(player);
+  }
+});
+
+module.exports = { addPlayer, loginPlayer, getPlayer, updateScore };

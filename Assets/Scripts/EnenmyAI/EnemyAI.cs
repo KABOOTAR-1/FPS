@@ -131,7 +131,7 @@ public class EnemyAI : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.forward, out hit, 10f, playermask))
             {
-                Debug.Log("The enemy attack the player");
+                Player.Instance.DecreaseHealth();
             }
             currtime = Time.time + 1 / timebtnattacks;
            
