@@ -6,12 +6,10 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]
     float health;
-    ScoreSystem scoresystem;
 
     private void Start()
     {
         health = 100f;
-        scoresystem=GameObject.FindGameObjectWithTag("GameManager").GetComponent<ScoreSystem>();
     }
 
 
@@ -20,7 +18,7 @@ public class Enemy : MonoBehaviour
         health -= 5;
         if (health <= 0)
         {
-            scoresystem.IncreaseScore();
+            Player.Instance.IncreaseScore();
             Destroy(gameObject);
         }
     }

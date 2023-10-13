@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 709592186410664949}
   - component: {fileID: 1766580885452310752}
   - component: {fileID: 7972784123306990561}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Googles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ BoxCollider:
   m_GameObject: {fileID: 3339245175116456234}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 3869114663375551759}
   - component: {fileID: 6323475855648749071}
   - component: {fileID: -7917222663556021603}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Enemy2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 567f4ced13a44c64ab767fb164cb48d1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -246,16 +246,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90c70375ce6f934e81d24e144b797d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dis: 0
-  playerwithsightrange: 0
-  playerwithattackrange: 0
+  player: {fileID: 0}
   sightrange: 0
   attackrange: 0
   playermask:
     serializedVersion: 2
     m_Bits: 0
   walkPointSet: 0
-  walkpointRange: 0
-  walkpoint: {x: 0, y: 0, z: 0}
   timebtnattacks: 0
   currtime: 0

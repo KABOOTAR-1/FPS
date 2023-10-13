@@ -657,7 +657,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 95
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!154 &443377170
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -1093,6 +1093,7 @@ GameObject:
   - component: {fileID: 786745075}
   - component: {fileID: 786745074}
   - component: {fileID: 786745076}
+  - component: {fileID: 786745077}
   m_Layer: 6
   m_Name: Root Camera
   m_TagString: Player
@@ -1168,6 +1169,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554a96853ae479a44b29c4950be2828d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &786745077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786745072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b2936f5590428d4eadf66556d53e338, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Score: {fileID: 2091758935}
 --- !u!1001 &854600478
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1800,7 +1814,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1025714288
 Transform:
   m_ObjectHideFlags: 0
@@ -1842,7 +1856,6 @@ GameObject:
   - component: {fileID: 1052254388}
   - component: {fileID: 1052254389}
   - component: {fileID: 1052254390}
-  - component: {fileID: 1052254391}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -1904,19 +1917,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 2bd8959f5fbd3644aa33af1a155fc147, type: 2}
   - {fileID: 2100000, guid: 1cf6f4c6e6e0518419839d3f5448dd99, type: 2}
   - {fileID: 2100000, guid: cc421da483ed06c49933077a621bff25, type: 2}
---- !u!114 &1052254391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1052254387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1bad06de7f3041419f8b5816de89838, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Score: {fileID: 2091758935}
 --- !u!1 &1229678888
 GameObject:
   m_ObjectHideFlags: 0
@@ -3800,7 +3800,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &2087849032
 AudioSource:
   m_ObjectHideFlags: 0

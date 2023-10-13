@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     AudioSource m_AudioSource;
     [SerializeField]
     TextMeshProUGUI GunAmmo;
+    float time = 0;
+    GameObject _Player;
     private void Awake()
     {
         Time.timeScale = 0.2f;
@@ -30,7 +32,11 @@ public class GameManager : MonoBehaviour
         gunShooting = MainCamera.GetComponentInChildren<GunShooting>();
         User_Name.text = InputAndButtons.I_Username;
         gunShooting.SetTextMeshPro(GunAmmo);
+        gunShooting.SetAudioSource(m_AudioSource);
+        gunShooting.SetBulletMark(bulletMark);
+        _Player = playerHealth.gameObject;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -58,10 +64,37 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             if (Input.GetMouseButtonDown(0) || Input.GetKeyUp(KeyCode.R))
             {
-                Transform EnemyPlayer = gunShooting.DoneGameManager(Enemy, Camera.main, bulletMark,m_AudioSource);
-                if (EnemyPlayer != null)
-                EnemyPlayer.GetComponent<Enemy>().ChangeHealth();
+                StartCoroutine(gunShooting.DoneGameManager(Enemy, Camera.main, (val) =>
+                {
+                    if (val != null)
+                    {
+                        val.GetComponent<Enemy>().ChangeHealth();
+                        StartCoroutine(ToDo(val));
+                    }
+                }));
             }
+        }
+
+    }
+
+    IEnumerator ToDo(Transform val)
+    {
+        if (val != null)
+        {
+            float rotationSpeed = 3f;
+            Quaternion startRotation = val.rotation;
+            Quaternion targetRotation = Quaternion.LookRotation(_Player.transform.position - val.position);
+
+            float elapsedTime = 0f;
+
+            while (val!=null && elapsedTime < 1f)
+            {
+                val.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime);
+                elapsedTime += Time.deltaTime * rotationSpeed;
+                yield return null;
+            }
+            if(val!=null)
+            val.rotation = targetRotation;
         }
 
     }

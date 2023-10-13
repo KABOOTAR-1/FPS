@@ -2,20 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-public class ScoreSystem : MonoBehaviour
+public class Player:MonoBehaviour
 {
     int score;
+    public static Player Instance;
     [SerializeField]
     TextMeshProUGUI Score;
-    void Start()
+    private void Start()
     {
-        
+        if (Instance != this)
+        {
+            Instance = this;
+        }
     }
 
-    // Update is called once per frame
     public void IncreaseScore()
     {
         score++;
-        Score.text = "SCORE:"+score.ToString(); 
+        Score.text = "SCORE:" + score.ToString();
     }
 }

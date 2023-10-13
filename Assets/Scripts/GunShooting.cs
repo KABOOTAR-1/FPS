@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class GunShooting : MonoBehaviour
 {
@@ -20,56 +21,80 @@ public class GunShooting : MonoBehaviour
     float magzine;
     TextMeshProUGUI ammo;
     RaycastHit hit;
-    Transform val;
+    GameObject bulletMark;
+    AudioSource m_AudioSource;
+    Vector3 startPoint;
+    Vector3 endPoint;
+    float startTime;
     public void SetTextMeshPro(TextMeshProUGUI main)
     {
         ammo = main;
     }
-    public Transform DoneGameManager(LayerMask Enemy,Camera cam,GameObject bulletMark, AudioSource m_AudioSource)
-    {
-        val =null;
-        if(currentammo>0 || magzine>0)
-        return Done(Enemy,cam,bulletMark,m_AudioSource);
 
-        return val;
+    public void SetBulletMark(GameObject Mark)
+    {
+        bulletMark = Mark;
     }
-    Transform Done(LayerMask Enemy,Camera cam, GameObject bulletMark, AudioSource m_AudioSource)
+
+    public void SetAudioSource(AudioSource audio)
     {
-        if (Input.GetKeyUp(KeyCode.R) || currentammo <= 0)
-        {
-            if (canFire)
-                StartCoroutine(Reload());
-        }
+        m_AudioSource = audio;
+    }
 
-        if (magzine <= 0)
-            if (currentammo <= 0)
-                return null;
-
-        if (Input.GetMouseButtonDown(0) &&canFire && recoil <= Time.time)
+    public IEnumerator DoneGameManager(LayerMask Enemy,Camera cam,Action<Transform>onResult)
+    {
+        Transform val = null;
+        if (currentammo > 0 || magzine > 0)
         {
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range,Enemy))
-            {   
-                    GameObject Mark = Instantiate(bulletMark, hit.point, Quaternion.LookRotation(hit.normal));
-                    Destroy(Mark, 1);
-                    val = hit.transform;
+
+            if (Input.GetKeyUp(KeyCode.R) || currentammo <= 0)
+            {
+                if (canFire)
+                    StartCoroutine(Reload());
             }
-            recoil = Time.time + 1 / m_WeaponManager.firerate;
-            m_ParticleSystem.Play();
-            currentammo--;
-            m_AudioSource.Play();
-            recoil_script.recoil();
-            anime.Play("Shoot");
-        }
-        else
-        {
 
-            //anime.Play("idle");
-        }
-        ammo.text = currentammo + "/" + magzine;
-        return val;
+            if (magzine <= 0)
+                if (currentammo <= 0)
+                {
+                    val = null;
+                }
+            float start = Time.time;
+            if (Input.GetMouseButtonDown(0) && canFire && recoil <= Time.time)
+            {
+                startTime = Time.time;
+                if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, range, Enemy))
+                {
+                    startPoint = cam.transform.position;
+                    endPoint = hit.point;
+                    if (bulletMark != null)
+                    {
+                        GameObject Mark = Instantiate(bulletMark, hit.point, Quaternion.LookRotation(hit.normal));
+                        Destroy(Mark, 1);
+                    }
+                    val = hit.transform;
+                }
+                recoil = Time.time + 1 / m_WeaponManager.firerate;
+                m_ParticleSystem.Play();
+                currentammo--;
+                if (m_AudioSource != null)
+                    m_AudioSource.Play();
+                recoil_script.recoil();
+                anime.Play("Shoot");
+                ammo.text = currentammo + "/" + magzine;
+            }
+            else
+            {
 
+                //anime.Play("idle");
+            }
+            float end = Time.time;
+            onResult?.Invoke(val);
+        }
+  
+       
+        yield return null;
+ 
     }
-
 
     IEnumerator Reload()
     {
@@ -92,6 +117,5 @@ public class GunShooting : MonoBehaviour
         magzine = m_WeaponManager.magzine;
         ammo.text = currentammo + "/" + magzine;
     }
-
   
 }
