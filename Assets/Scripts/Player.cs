@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEditor;
 public class Player:MonoBehaviour
 {
     int score=0;
@@ -38,6 +39,12 @@ public class Player:MonoBehaviour
         {
             Debug.Log("Player is dead");
             PutRequest();
+
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+#endif
+            Application.Quit();
+
         }
         else
         {
@@ -52,12 +59,20 @@ public class Player:MonoBehaviour
 
     IEnumerator HitDetect()
     {
-        while(vigentte.intensity.value<maxIntensity)
-        vigentte.intensity.value = Mathf.MoveTowards(vigentte.intensity.value, maxIntensity, Time.deltaTime*0.5f);
-        yield return new WaitForSeconds(5f);
-        while(vigentte.intensity.value>0)
-        vigentte.intensity.value = Mathf.MoveTowards(vigentte.intensity.value, 0, Time.deltaTime *0.5f);
+        float intensityChangeSpeed = 0.01f; 
+        while (vigentte.intensity.value < maxIntensity)
+        {
+            vigentte.intensity.value = Mathf.MoveTowards(vigentte.intensity.value, maxIntensity, Time.deltaTime );
+            yield return null; 
+        }
 
-        yield return null;
+        yield return new WaitForSeconds(5f);
+
+        while (vigentte.intensity.value > 0)
+        {
+            vigentte.intensity.value = Mathf.MoveTowards(vigentte.intensity.value, 0, Time.deltaTime );
+            yield return null; 
+        }
     }
+
 }
