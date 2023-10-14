@@ -1181,6 +1181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b2936f5590428d4eadf66556d53e338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  postProcessVolune: {fileID: 1729784121}
   Score: {fileID: 2091758935}
 --- !u!1001 &854600478
 PrefabInstance:
