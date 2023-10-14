@@ -1,22 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEngine.UI;
-using UnityEditor.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
     bool sound = true;
     [SerializeField]
     GameObject SoundIcon;
-
     public Sprite[] sprites;
     [SerializeField]
     AudioSource audio_source;
-    // Update is called once per frame
    public void Resume()
     {
         
@@ -48,18 +42,20 @@ public class MainMenu : MonoBehaviour
             audio_source.Stop();
             x = 1;
         }
-            SoundIcon.transform.GetComponent<Image>().sprite = sprites[x];
-       
-        
+        SoundIcon.transform.GetComponent<Image>().sprite = sprites[x];     
     }
 
     public void Exit()
     {
+        if (SceneManager.GetActiveScene().buildIndex +1 == SceneManager.sceneCountInBuildSettings)
+        {
+            Player.Instance.PutRequest();
+        }
 
-      #if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
-      #endif
-        Application.Quit();
+        #if UNITY_EDITOR
+          EditorApplication.isPlaying = false;
+        #endif
+          Application.Quit();
 
     }
     

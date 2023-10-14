@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 public class Player:MonoBehaviour
 {
-    int score;
+    int score=0;
     public static Player Instance;
     [SerializeField]
     TextMeshProUGUI Score;
@@ -15,6 +15,7 @@ public class Player:MonoBehaviour
         {
             Instance = this;
         }
+        score = 0;
     }
 
     public void IncreaseScore()
@@ -26,16 +27,19 @@ public class Player:MonoBehaviour
     public void DecreaseHealth()
     {
         health -= 10;
-        
         if (health <= 0)
         {
             Debug.Log("Player is dead");
-            string putUrl=ApiManager.MakeApiCall("update");
-            StartCoroutine(ClientAPI.Put(putUrl,InputAndButtons.I_Username,score));
+            PutRequest();
         }
         else
         {
             Debug.Log(health);
         }
+    }
+    public void PutRequest()
+    {
+        string putUrl = ApiManager.MakeApiCall("update");
+        StartCoroutine(ClientAPI.Put(putUrl, InputAndButtons.I_Username, score));
     }
 }

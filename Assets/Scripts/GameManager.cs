@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     AudioSource m_AudioSource;
     [SerializeField]
     TextMeshProUGUI GunAmmo;
-    float time = 0;
     GameObject _Player;
     private void Awake()
     {
